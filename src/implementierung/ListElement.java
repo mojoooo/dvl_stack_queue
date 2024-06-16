@@ -49,40 +49,20 @@ public class ListElement implements IListElement
 		}
 	}
 	
-	public ListElement()
-	{
-		this.setValueElement(new ValueElement());
-		this.predecessor = null;
-		this.successor = null;
-	}
-	
 	public ListElement(IValueElement valueElement)
 	{
 		this.setValueElement(valueElement);
-		this.predecessor = null;
-		this.successor = null;
-	}
-	
-	public ListElement(IValueElement valueElement, IListElement predecessor, IListElement successor)
-	{
-		this.setValueElement(valueElement);
-		this.setPredecessor(predecessor);
-		this.setSuccessor(successor);
-	}
-	
-	public ListElement(IListElement listElement)
-	{
-		this.setValueElement(listElement.getValueElement());
-		this.setPredecessor(listElement.getPredecessor());
-		this.setSuccessor(listElement.getSuccessor());
 	}
 	
 	public String toString()
 	{
+		String previousElement = this.getPredecessor() != null ? this.getPredecessor().getValueElement().toString() : "Leer";
+		String nextElement = this.getSuccessor() != null ? this.getSuccessor().getValueElement().toString() : "Leer";
+		
 		return (
 					"currentElement: " + this.getValueElement().toString() + "\n" +
-					"previousElement: " + this.getPredecessor() != null ? this.getPredecessor().toString() : "Leer" + "\n" +
-					"nextElement: " + this.getSuccessor() != null ? this.getSuccessor().toString() : "Leer"
+					"previousElement: " + previousElement + "\n" +
+					"nextElement: " + nextElement 
 				);
 	}
 }

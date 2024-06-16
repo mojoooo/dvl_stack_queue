@@ -35,7 +35,7 @@ public class ValueElement implements IValueElement
 	
 	public ValueElement()
 	{
-		this.name = "";
+		this.name = "Dummy";
 		this.value = 0;
 	}
 	
@@ -53,6 +53,6 @@ public class ValueElement implements IValueElement
 	
 	public String toString()
 	{
-		return "Name: " + this.getName() + " Value: " + this.getValue();
+		return "Name: " + this.getName() + ", Value: " + this.getValue();
 	}
 }
