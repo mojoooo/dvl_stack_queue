@@ -56,17 +56,20 @@ public class List implements IList
 				newElement.setPredecessor(this.getRoot());
 				newElement.setSuccessor(this.getRoot().getSuccessor());
 				this.getRoot().getSuccessor().setPredecessor(newElement);
-				this.getRoot().setSuccessor(newElement);
+				this.getRoot().getPredecessor().setSuccessor(newElement);
 			} else if (pos > this.countElementsRecursive(this.getHead())) {
 				this.insertAtTheEnd(value);
 			} else {
-				System.out.println("Element at pos " + pos + ": " + this.getElementAtt(pos).getValueElement().toString());
-				/*
-				newElement.setPredecessor(this.getElementAtt(pos));
-				newElement.setSuccessor(this.getElementAtt(pos).getSuccessor());
-				this.getElementAtt(pos).getSuccessor().setPredecessor(newElement);
-				this.getElementAtt(pos).setSuccessor(newElement);
-				*/
+				IListElement previousElement = this.getListElementAt(pos - 1);
+				IListElement nextElement = this.getListElementAt(pos);
+				
+				//System.out.println("previous: " + previousElement);
+				//System.out.println("next: " + nextElement);
+				
+				newElement.setPredecessor(this.getListElementAt(pos).getPredecessor());
+				newElement.setSuccessor(this.getListElementAt(pos));
+				previousElement.setSuccessor(newElement);
+				nextElement.setPredecessor(newElement);
 			}
 		}
 	}
@@ -81,34 +84,57 @@ public class List implements IList
         return (1 + countElementsRecursive(listElement.getPredecessor()));
     }
 	
-	/**
-	 * @TODO
-	 * correct the methods below
-	 * 
-	 * getElementAtt gets stackoverflow error
-	 * 
-	 * why is the predefined method getElementAt of return type iValueElement? IListElement would make more sense to me
-	 * 
-	 */
+	public IListElement getListElementAt(int pos)
+	{		
+		return getListElementAtRecursive(this.getRoot(), pos);
+	}
 	
-	public IListElement getElementAtt(int pos)
+	public IListElement getListElementAtRecursive(IListElement listElement, int pos)
 	{
-		return getElementAtRecursive(this.getRoot(), pos);
+		if (pos == 0)
+		{
+			return listElement;
+		}
+		
+        return getListElementAtRecursive(listElement.getSuccessor(), pos - 1);
+    }
+	
+	public IValueElement getElementAt(int pos)
+	{
+		if (pos == 0)
+		{
+			return null;
+		} else if (pos > this.countElementsRecursive(this.getHead())) {
+			return this.getRoot().getPredecessor().getValueElement();
+		}
+		
+		
+		return getElementAtRecursive(this.getRoot(), pos).getValueElement();
 	}
 	
 	public IListElement getElementAtRecursive(IListElement listElement, int pos)
 	{
-        return getElementAtRecursive(listElement.getSuccessor(), (pos - 1));
-    }
-	
-	public IValueElement getElementAt(int position)
-	{
-		return null;
+		if (pos == 0)
+		{
+			return listElement;
+		}
+		
+		return getElementAtRecursive(listElement.getSuccessor(), pos - 1);
 	}
 	
 	public int getFirstPosOf(IValueElement value)
 	{
-		return 0;
+		return getFirstPosOfRecursive(this.getRoot(), value);
+	}
+	
+	public int getFirstPosOfRecursive(IListElement listElement, IValueElement value)
+	{
+		if (listElement.getValueElement() == value)
+		{
+			return 0;
+		}
+		
+		return 1 + getFirstPosOfRecursive(listElement.getSuccessor(), value);
 	}
 	
 	public void deleteFirstOf(IValueElement value)
@@ -137,6 +163,16 @@ public class List implements IList
 	
 	public String toString()
 	{
-		return this.getHead().toString();
+		return printAllListElements(this.getRoot().getSuccessor());
+	}
+	
+	public String printAllListElements(IListElement listElement)
+	{
+		if (listElement.getValueElement().getName() == "Dummy")
+		{
+			return "";
+		}
+		
+		return listElement.getValueElement() + this.printAllListElements(listElement.getSuccessor());
 	}
 }

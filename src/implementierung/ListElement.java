@@ -56,13 +56,6 @@ public class ListElement implements IListElement
 	
 	public String toString()
 	{
-		String previousElement = this.getPredecessor() != null ? this.getPredecessor().getValueElement().toString() : "Leer";
-		String nextElement = this.getSuccessor() != null ? this.getSuccessor().getValueElement().toString() : "Leer";
-		
-		return (
-					"currentElement: " + this.getValueElement().toString() + "\n" +
-					"previousElement: " + previousElement + "\n" +
-					"nextElement: " + nextElement 
-				);
+		return this.getValueElement().toString();
 	}
 }

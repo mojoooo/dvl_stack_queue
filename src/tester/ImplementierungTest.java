@@ -19,9 +19,9 @@ public class ImplementierungTest
 		list.insertAtTheEnd(v5);
 		
 		list.insertAtPos(3, v3);
-		
-		System.out.println(list.countElementsRecursive(list.getHead()));
-		
+		list.insertAtPos(2, v4);
+
+		System.out.println(list.getFirstPosOf(v4));
 		System.out.println(list);
 	}
 }
