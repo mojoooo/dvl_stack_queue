@@ -54,6 +54,13 @@ public class ListElement implements IListElement
 		this.setValueElement(valueElement);
 	}
 	
+	public ListElement(IListElement listElement)
+	{
+		this.setValueElement(listElement.getValueElement());
+		this.setPredecessor(listElement.getPredecessor());
+		this.setSuccessor(listElement.getSuccessor());
+	}
+	
 	public String toString()
 	{
 		return this.getValueElement().toString();

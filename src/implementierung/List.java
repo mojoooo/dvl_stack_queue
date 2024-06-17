@@ -33,7 +33,7 @@ public class List implements IList
 		{
 			listElement = new ListElement(value);
 		} else {
-			listElement = new ListElement(new ValueElement());
+			listElement = new ListElement(new ValueElement("Placeholder", 0));
 		}
 		
 		this.getHead().setSuccessor(listElement);
@@ -62,9 +62,6 @@ public class List implements IList
 			} else {
 				IListElement previousElement = this.getListElementAt(pos - 1);
 				IListElement nextElement = this.getListElementAt(pos);
-				
-				//System.out.println("previous: " + previousElement);
-				//System.out.println("next: " + nextElement);
 				
 				newElement.setPredecessor(this.getListElementAt(pos).getPredecessor());
 				newElement.setSuccessor(this.getListElementAt(pos));
@@ -139,27 +136,65 @@ public class List implements IList
 	
 	public void deleteFirstOf(IValueElement value)
 	{
+		IListElement elementToDelete = this.findElementByValue(this.getRoot(), value);
 		
+		if (elementToDelete != null)
+		{
+			elementToDelete.getPredecessor().setSuccessor(elementToDelete.getSuccessor());
+			elementToDelete.getSuccessor().setPredecessor(elementToDelete.getPredecessor());
+		}
+	}
+	
+	public IListElement findElementByValue(IListElement listElement, IValueElement value)
+	{
+		if (listElement.getValueElement() == value)
+		{
+			return listElement;
+		}
+
+		if (listElement.getSuccessor() == this.getRoot())
+		{
+			return null;
+		}
+		
+		return findElementByValue(listElement.getSuccessor(), value);
 	}
 	
 	public void deleteAllOf(IValueElement value)
 	{
-		
+		while (this.findElementByValue(this.getRoot(), value) != null)
+		{
+			this.deleteFirstOf(value);
+		}
 	}
 	
 	public boolean member(IValueElement value)
 	{
+		if (this.findElementByValue(this.getRoot(), value) != null)
+		{
+			return true;
+		}
+
 		return false;
 	}
 	
 	public void reverse()
-	{
-		
+	{	
+		this.swapPredecessorAndSuccessor(this.getRoot());
+	}
+
+	public void swapPredecessorAndSuccessor(IListElement listElement)
+	{		
+		if (listElement.getSuccessor() != this.getRoot())
+		{		
+			swapPredecessorAndSuccessor(listElement.getSuccessor());
+			IListElement tempElement = listElement.getPredecessor();
+			listElement.setPredecessor(listElement.getSuccessor());
+			listElement.setSuccessor(tempElement);
+		}
 	}
 	
-	public List()
-	{
-	}
+	public List() { }
 	
 	public String toString()
 	{
