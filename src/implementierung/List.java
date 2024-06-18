@@ -5,26 +5,12 @@ import schnittstellen.*;
 public class List implements IList
 {
 	private IListElement head = new ListElement(new ValueElement());
-	private final IListElement root = head;
 	
 	public IListElement getHead()
 	{
 		return this.head;
 	}
-	
-	public void setHead(IListElement head)
-	{
-		if (head != null)
-		{
-			this.head = head;
-		}
-	}
-	
-	public IListElement getRoot()
-	{
-		return this.root;
-	}
-	
+
 	public void insertAtTheEnd(IValueElement value)
 	{
 		IListElement listElement;
@@ -33,16 +19,23 @@ public class List implements IList
 		{
 			listElement = new ListElement(value);
 		} else {
-			listElement = new ListElement(new ValueElement("Placeholder", 0));
+			listElement = new ListElement(new ValueElement());
 		}
 		
-		this.getHead().setSuccessor(listElement);
-		listElement.setPredecessor(this.getHead());
-		listElement.setSuccessor(this.getRoot());
-		
-		this.getRoot().setPredecessor(listElement);
-		
-		this.setHead(listElement);
+		if (this.getHead().getSuccessor() != null)
+		{	
+			listElement.setPredecessor(this.getHead().getPredecessor());
+			listElement.setSuccessor(this.getHead());
+			
+			this.getHead().setPredecessor(listElement);
+			listElement.getPredecessor().setSuccessor(listElement);
+		} else {
+			this.getHead().setSuccessor(listElement);
+			this.getHead().setPredecessor(listElement);
+			
+			listElement.setPredecessor(this.getHead());
+			listElement.setSuccessor(this.getHead());
+		}
 	}
 	
 	public void insertAtPos(int pos, IValueElement value)
@@ -53,10 +46,10 @@ public class List implements IList
 
 			if (pos <= 1)
 			{
-				newElement.setPredecessor(this.getRoot());
-				newElement.setSuccessor(this.getRoot().getSuccessor());
-				this.getRoot().getSuccessor().setPredecessor(newElement);
-				this.getRoot().getPredecessor().setSuccessor(newElement);
+				newElement.setPredecessor(this.getHead());
+				newElement.setSuccessor(this.getHead().getSuccessor());
+				this.getHead().setSuccessor(newElement);
+				newElement.getSuccessor().setPredecessor(newElement);
 			} else if (pos > this.countElementsRecursive(this.getHead())) {
 				this.insertAtTheEnd(value);
 			} else {
@@ -71,19 +64,21 @@ public class List implements IList
 		}
 	}
 	
+	
 	public int countElementsRecursive(IListElement listElement)
 	{
-        if (listElement.getValueElement().getName() == "Dummy")
+        if (listElement.getSuccessor() == this.getHead() || listElement.getSuccessor() == null)
         {	
             return 0;
         }
 
-        return (1 + countElementsRecursive(listElement.getPredecessor()));
+        return (1 + countElementsRecursive(listElement.getSuccessor()));
     }
+	
 	
 	public IListElement getListElementAt(int pos)
 	{		
-		return getListElementAtRecursive(this.getRoot(), pos);
+		return getListElementAtRecursive(this.getHead(), pos);
 	}
 	
 	public IListElement getListElementAtRecursive(IListElement listElement, int pos)
@@ -95,18 +90,18 @@ public class List implements IList
 		
         return getListElementAtRecursive(listElement.getSuccessor(), pos - 1);
     }
-	
+
 	public IValueElement getElementAt(int pos)
 	{
 		if (pos == 0)
 		{
 			return null;
 		} else if (pos > this.countElementsRecursive(this.getHead())) {
-			return this.getRoot().getPredecessor().getValueElement();
+			return this.getHead().getPredecessor().getValueElement();
 		}
 		
 		
-		return getElementAtRecursive(this.getRoot(), pos).getValueElement();
+		return getElementAtRecursive(this.getHead(), pos).getValueElement();
 	}
 	
 	public IListElement getElementAtRecursive(IListElement listElement, int pos)
@@ -121,7 +116,7 @@ public class List implements IList
 	
 	public int getFirstPosOf(IValueElement value)
 	{
-		return getFirstPosOfRecursive(this.getRoot(), value);
+		return getFirstPosOfRecursive(this.getHead(), value);
 	}
 	
 	public int getFirstPosOfRecursive(IListElement listElement, IValueElement value)
@@ -136,7 +131,7 @@ public class List implements IList
 	
 	public void deleteFirstOf(IValueElement value)
 	{
-		IListElement elementToDelete = this.findElementByValue(this.getRoot(), value);
+		IListElement elementToDelete = this.findElementByValue(this.getHead(), value);
 		
 		if (elementToDelete != null)
 		{
@@ -152,7 +147,7 @@ public class List implements IList
 			return listElement;
 		}
 
-		if (listElement.getSuccessor() == this.getRoot())
+		if (listElement.getSuccessor() == this.getHead())
 		{
 			return null;
 		}
@@ -162,7 +157,7 @@ public class List implements IList
 	
 	public void deleteAllOf(IValueElement value)
 	{
-		while (this.findElementByValue(this.getRoot(), value) != null)
+		while (this.findElementByValue(this.getHead(), value) != null)
 		{
 			this.deleteFirstOf(value);
 		}
@@ -170,7 +165,7 @@ public class List implements IList
 	
 	public boolean member(IValueElement value)
 	{
-		if (this.findElementByValue(this.getRoot(), value) != null)
+		if (this.findElementByValue(this.getHead(), value) != null)
 		{
 			return true;
 		}
@@ -180,17 +175,17 @@ public class List implements IList
 	
 	public void reverse()
 	{	
-		this.swapPredecessorAndSuccessor(this.getRoot());
+		this.swapPredecessorAndSuccessor(this.getHead());
 	}
 
 	public void swapPredecessorAndSuccessor(IListElement listElement)
 	{		
-		if (listElement.getSuccessor() != this.getRoot())
+		if (listElement.getSuccessor() != this.getHead())
 		{		
-			swapPredecessorAndSuccessor(listElement.getSuccessor());
 			IListElement tempElement = listElement.getPredecessor();
 			listElement.setPredecessor(listElement.getSuccessor());
 			listElement.setSuccessor(tempElement);
+			swapPredecessorAndSuccessor(listElement.getPredecessor());
 		}
 	}
 	
@@ -198,14 +193,14 @@ public class List implements IList
 	
 	public String toString()
 	{
-		return printAllListElements(this.getRoot().getSuccessor());
+		return printAllListElements(this.getHead());
 	}
 	
 	public String printAllListElements(IListElement listElement)
 	{
-		if (listElement.getValueElement().getName() == "Dummy")
+		if (listElement.getSuccessor() == this.getHead())
 		{
-			return "";
+			return listElement.getValueElement().toString();
 		}
 		
 		return listElement.getValueElement() + this.printAllListElements(listElement.getSuccessor());

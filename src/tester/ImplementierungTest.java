@@ -19,13 +19,13 @@ public class ImplementierungTest
 		list.insertAtTheEnd(v1);
 		list.insertAtTheEnd(v2);
 		list.insertAtTheEnd(v3);
-		//list.insertAtTheEnd(v1);
-		//list.insertAtPos(3, v3);
+		list.insertAtTheEnd(v1);
+		list.insertAtPos(2, v3);
 		//list.insertAtPos(2, v4);
 		
 		System.out.println(list);
 		
-		list.reverse();
-		System.out.print(list);
+		//list.reverse();
+		//System.out.print(list);
 	}
 }
