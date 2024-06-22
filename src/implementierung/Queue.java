@@ -2,12 +2,12 @@ package implementierung;
 
 import schnittstellen.*;
 
-public class Stack implements IStack
+public class Queue implements IQueue
 {
 	private final static int MAX_CAPACITY = 7;
 	
 	private IList dvl;
-
+	
 	public IList getDVL()
 	{
 		return this.dvl;
@@ -36,10 +36,10 @@ public class Stack implements IStack
 	{
 		List list = (List) this.getDVL();
 		
-		return list.countElementsRecursive(list.getHead()) >= Stack.MAX_CAPACITY;
+		return list.countElementsRecursive(list.getHead()) >= Queue.MAX_CAPACITY;
 	}
 	
-	public int pop()
+	public int dequeue()
 	{
 		if (this.isEmpty())
 		{
@@ -54,16 +54,16 @@ public class Stack implements IStack
 		return value;
 	}
 	
-	public void push(int value)
+	public void enqueue(int value)
 	{
 		if (!this.isFull() && value >= 0)
 		{
-			ValueElement newElement = new ValueElement("StackElement", value);
-			this.getDVL().insertAtTheEnd(newElement);
+			ValueElement newElement = new ValueElement("QueueElement", value);
+			this.getDVL().insertAtPos(0, newElement);
 		}
 	}
 	
-	public int top()
+	public int front()
 	{
 		if (this.isEmpty())
 		{
@@ -75,18 +75,9 @@ public class Stack implements IStack
 		return list.getElementAt(list.countElementsRecursive(list.getHead())).getValue();
 	}
 	
-	public Stack()
+	public Queue()
 	{
 		List newList = new List();
-		this.setDVL(newList);
-	}
-	
-	public Stack(int value)
-	{
-		this();
-		ValueElement newValueElement = new ValueElement("StackElement", value);
-		List newList = new List();
-		newList.insertAtTheEnd(newValueElement);
 		this.setDVL(newList);
 	}
 }

@@ -47,7 +47,14 @@ public class List implements IList
 			if (pos <= 1)
 			{
 				newElement.setPredecessor(this.getHead());
-				newElement.setSuccessor(this.getHead().getSuccessor());
+				
+				if (this.getHead().getSuccessor() != null)
+				{
+					newElement.setSuccessor(this.getHead().getSuccessor());
+				} else {
+					newElement.setSuccessor(this.getHead());
+				}
+				
 				this.getHead().setSuccessor(newElement);
 				newElement.getSuccessor().setPredecessor(newElement);
 			} else if (pos > this.countElementsRecursive(this.getHead())) {
