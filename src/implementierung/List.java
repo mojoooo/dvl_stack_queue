@@ -163,6 +163,13 @@ public class List implements IList
 		}
 	}
 	
+	public void deleteElementAt(int pos)
+	{
+		IListElement listElement = this.getListElementAt(pos - 1);
+		
+		listElement.setSuccessor(this.getHead());
+	}
+	
 	public boolean member(IValueElement value)
 	{
 		if (this.findElementByValue(this.getHead(), value) != null)
