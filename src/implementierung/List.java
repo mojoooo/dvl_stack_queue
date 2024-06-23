@@ -42,40 +42,42 @@ public class List implements IList
 
     public void insertAtPos(int pos, IValueElement value)
     {
-        if (value != null)
+        if (value == null)
         {
-            ListElement newElement = new ListElement(value);
+            value = new ValueElement("unnamed", 0);
+        }
+        
+        ListElement newElement = new ListElement(value);
 
-            if (pos <= 1)
+        if (pos <= 1)
+        {
+            newElement.setPredecessor(this.getHead());
+
+            if (this.getHead().getSuccessor() != null)
             {
-                newElement.setPredecessor(this.getHead());
-
-                if (this.getHead().getSuccessor() != null)
-                {
-                    newElement.setSuccessor(this.getHead().getSuccessor());
-                    newElement.getSuccessor().setPredecessor(newElement);
-                }
-                else
-                {
-                    this.getHead().setPredecessor(newElement);
-                }
-
-                this.getHead().setSuccessor(newElement);
-            }
-            else if (pos > this.countElementsRecursive(this.getHead()))
-            {
-                this.insertAtTheEnd(value);
+                newElement.setSuccessor(this.getHead().getSuccessor());
+                newElement.getSuccessor().setPredecessor(newElement);
             }
             else
             {
-                IListElement previousElement = this.getListElementAt(pos - 1);
-                IListElement nextElement = this.getListElementAt(pos);
-
-                newElement.setPredecessor(this.getListElementAt(pos).getPredecessor());
-                newElement.setSuccessor(this.getListElementAt(pos));
-                previousElement.setSuccessor(newElement);
-                nextElement.setPredecessor(newElement);
+                this.getHead().setPredecessor(newElement);
             }
+
+            this.getHead().setSuccessor(newElement);
+        }
+        else if (pos > this.countElementsRecursive(this.getHead()))
+        {
+            this.insertAtTheEnd(value);
+        }
+        else
+        {
+            IListElement previousElement = this.getListElementAt(pos - 1);
+            IListElement nextElement = this.getListElementAt(pos);
+
+            newElement.setPredecessor(this.getListElementAt(pos).getPredecessor());
+            newElement.setSuccessor(this.getListElementAt(pos));
+            previousElement.setSuccessor(newElement);
+            nextElement.setPredecessor(newElement);
         }
     }
 
