@@ -4,7 +4,7 @@ import schnittstellen.*;
 
 public class List implements IList
 {
-     private IListElement head = new ListElement(new ValueElement());
+    private IListElement head = new ListElement(new ValueElement());
 
     public IListElement getHead()
     {
