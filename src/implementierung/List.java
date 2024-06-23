@@ -219,11 +219,14 @@ public class List implements IList
 
     public void reverse()
     {
-        this.swapPredecessorAndSuccessor(this.getHead());
+        if (this.countElementsRecursive(this.getHead()) >= 1)
+        {
+            this.swapPredecessorAndSuccessor(this.getHead());
 
-        this.getHead().getSuccessor().setSuccessor(this.getHead().getSuccessor().getPredecessor());
-        this.getHead().getSuccessor().setPredecessor(this.getHead());
-        ((ListElement) this.getHead().getPredecessor()).deleteSuccessor();
+            this.getHead().getSuccessor().setSuccessor(this.getHead().getSuccessor().getPredecessor());
+            this.getHead().getSuccessor().setPredecessor(this.getHead());
+            ((ListElement) this.getHead().getPredecessor()).deleteSuccessor();
+        }
     }
 
     public void swapPredecessorAndSuccessor(IListElement listElement)
