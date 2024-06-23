@@ -128,7 +128,7 @@ public class List implements IList
 
     public int getFirstPosOf(IValueElement value)
     {
-        return getFirstPosOfRecursive(this.getHead(), value);
+        return this.member(value) ? getFirstPosOfRecursive(this.getHead(), value) : -1;
     }
 
     public int getFirstPosOfRecursive(IListElement listElement, IValueElement value)
