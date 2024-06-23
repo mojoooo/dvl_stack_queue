@@ -37,6 +37,11 @@ public class ListElement implements IListElement
             this.predecessor = predecessor;
         }
     }
+    
+    public void deletePredecessor()
+    {
+        this.predecessor = null;
+    }
 
     public IListElement getSuccessor()
     {
