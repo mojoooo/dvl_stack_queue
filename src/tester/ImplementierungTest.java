@@ -18,18 +18,16 @@ public class ImplementierungTest
         list.insertAtTheEnd(v1);
         list.insertAtTheEnd(v2);
         list.insertAtTheEnd(v3);
-        list.insertAtTheEnd(v1);
-        list.insertAtPos(1, v3);
-        list.insertAtPos(2, v4);
+        list.insertAtTheEnd(v4);
 
-        Stack stack = new Stack(1);
+        Stack stack = new Stack();
+        stack.push(0);
+        stack.push(1);
         stack.push(2);
         stack.push(3);
         stack.push(4);
         stack.push(5);
         stack.push(6);
-        stack.push(7);
-        stack.push(8);
 
         Queue queue = new Queue();
         queue.enqueue(0);
@@ -41,5 +39,7 @@ public class ImplementierungTest
         queue.enqueue(6);
         queue.enqueue(7);
         queue.enqueue(8);
+
+        System.out.println();
     }
 }
