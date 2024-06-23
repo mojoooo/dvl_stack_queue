@@ -108,13 +108,9 @@ public class List implements IList
 
     public IValueElement getElementAt(int pos)
     {
-        if (pos == 0)
+        if (pos <= 0 || pos > this.countElementsRecursive(this.getHead()))
         {
             return null;
-        }
-        else if (pos > this.countElementsRecursive(this.getHead()))
-        {
-            return this.getHead().getPredecessor().getValueElement();
         }
 
         return getElementAtRecursive(this.getHead(), pos).getValueElement();
