@@ -55,6 +55,10 @@ public class List implements IList
                     newElement.setSuccessor(this.getHead().getSuccessor());
                     newElement.getSuccessor().setPredecessor(newElement);
                 }
+                else
+                {
+                    this.getHead().setPredecessor(newElement);
+                }
 
                 this.getHead().setSuccessor(newElement);
             }

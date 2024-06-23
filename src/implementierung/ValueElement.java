@@ -35,7 +35,7 @@ public class ValueElement implements IValueElement
 
     public ValueElement()
     {
-        this.name = "Dummy";
+        this.name = "Dummy (Kopf)";
         this.value = 0;
     }
 
