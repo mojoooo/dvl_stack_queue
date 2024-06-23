@@ -152,7 +152,7 @@ public class List implements IList
             }
             else
             {
-                elementToDelete.getPredecessor().deleteSuccessor();
+                ((ListElement) elementToDelete.getPredecessor()).deleteSuccessor();
                 this.getHead().setPredecessor(elementToDelete.getPredecessor());
             }
         }
@@ -192,7 +192,7 @@ public class List implements IList
         }
         else
         {
-            elementToDelete.getPredecessor().deleteSuccessor();
+            ((ListElement) elementToDelete.getPredecessor()).deleteSuccessor();
             this.getHead().setPredecessor(elementToDelete.getPredecessor());
         }
     }
@@ -213,7 +213,7 @@ public class List implements IList
 
         this.getHead().getSuccessor().setSuccessor(this.getHead().getSuccessor().getPredecessor());
         this.getHead().getSuccessor().setPredecessor(this.getHead());
-        this.getHead().getPredecessor().deleteSuccessor();
+        ((ListElement) this.getHead().getPredecessor()).deleteSuccessor();
     }
 
     public void swapPredecessorAndSuccessor(IListElement listElement)

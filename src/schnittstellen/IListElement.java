@@ -13,6 +13,4 @@ public interface IListElement
     public IListElement getSuccessor();
 
     public void setSuccessor(IListElement successor);
-
-    public void deleteSuccessor();
 }
