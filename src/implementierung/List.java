@@ -203,7 +203,14 @@ public class List implements IList
         else
         {
             ((ListElement) elementToDelete.getPredecessor()).deleteSuccessor();
-            this.getHead().setPredecessor(elementToDelete.getPredecessor());
+            if (this.countElementsRecursive(this.getHead()) >= 1)
+            {
+                this.getHead().setPredecessor(elementToDelete.getPredecessor());
+            }
+            else
+            {
+                ((ListElement) this.getHead()).deletePredecessor();
+            }
         }
     }
 
